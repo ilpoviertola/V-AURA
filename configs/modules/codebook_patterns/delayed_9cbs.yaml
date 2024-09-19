@@ -1,0 +1,3 @@
+target: models.modules.misc.codebook_patterns.DelayedPatternProvider
+params:
+  n_q: 9

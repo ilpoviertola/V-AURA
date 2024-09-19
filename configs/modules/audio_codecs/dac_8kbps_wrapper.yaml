@@ -1,0 +1,3 @@
+target: models.modules.dac.model.DacModelWrapper
+params:
+  model_sr: 44100

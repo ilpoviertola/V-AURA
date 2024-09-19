@@ -1,0 +1,82 @@
+action: train
+
+model:
+  weight_decay: 1.08e-05 # lr * 0.1
+  learning_rate: 0.000108 # exp(-0.4214*ln(N)-0.5535)
+  freeze_feature_extractor: true
+  predict_at_val_start: true
+  plot_distr_of_pred_indices: true
+  lr_scheduler:
+    target: models.modules.misc.lr_schedulers.CosineLRScheduler
+    params:
+      warmup_steps: 1000
+      warmup_init_lr: 1.08e-05
+      total_steps: 200_000
+      lr_min_ratio: 0.1
+  audio_encoder_config: ${from_file:./configs/modules/audio_codecs/dac_8kbps_wrapper.yaml}
+  sampler_config: ${from_file:./configs/modules/samplers/llama_9cbs.yaml}
+  feature_extractor_config: ${from_file:./configs/modules/feature_extractors/avclip_vggsound.yaml}
+  pattern_provider_config: ${from_file:./configs/modules/codebook_patterns/delayed_9cbs.yaml}
+  files_to_track_during_training: null
+  flatten_vis_feats: true
+  return_attention_weights: false
+
+dataloader:
+  video_length: 2.56
+  partition_video_to_clips: false
+  dataset_type: vggsound
+  batch_size: 12
+  num_workers: 16
+  data_dir: null # path to the dataset
+  split_dir: ./data/splits/vggsound
+  meta_file: ./data/meta/vggsound/vggsound.csv
+  excluded_files: ./data/excluded_files/filtered_examples_vggsound
+  sample_rate_audio: 44100
+  rand_transform_prob: 0.5
+  pin_memory: true
+  run_additional_checks: false
+  filter_by_imagebind_score: true
+  imagebind_score_threshold: 0.00
+  imagebind_score_file_path: ./data/excluded_files/filtered_examples_vggsound/imagebind_scores_norm.json
+  # train transforms
+  audio_transforms_train:
+  video_transforms_train:
+    - target: torchvision.transforms.v2.Resize
+      params:
+        size: 256
+        antialias: true
+    - target: torchvision.transforms.v2.RandomCrop
+      params:
+        size: [224, 224]
+    - target: torchvision.transforms.v2.RandomHorizontalFlip
+      params:
+        p: ${dataloader.rand_transform_prob}
+    - target: models.data.transforms.video_transforms.ToFloat32DType
+    - target: torchvision.transforms.v2.Normalize
+      params:
+        mean: [0.5, 0.5, 0.5]
+        std: [0.5, 0.5, 0.5]
+  audio_transforms_test:
+  video_transforms_test:
+    - target: torchvision.transforms.v2.Resize
+      params:
+        size: 256
+        antialias: true
+    - target: torchvision.transforms.v2.CenterCrop
+      params:
+        size: [224, 224]
+    - target: models.data.transforms.video_transforms.ToFloat32DType
+    - target: torchvision.transforms.v2.Normalize
+      params:
+        mean: [0.5, 0.5, 0.5]
+        std: [0.5, 0.5, 0.5]
+
+trainer:
+  experiment_name: vgg-9cb-viscond-avclip_delayed-channel_concat-llama_like-ib_04-mm1_hparams
+  max_epochs: 250
+  early_stop_patience: 100
+  precision: 16-mixed
+  devices: [0, 1, 2, 3]
+  num_nodes: 1
+  log_dir: ./logs # path to log dir
+  ckpt_path: null

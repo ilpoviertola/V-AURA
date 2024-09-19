@@ -1,0 +1,77 @@
+# Configuration for new audio generation with the model.
+
+action: generate
+
+duration: 2.56
+stride: 0.64  # how much to generate new audio at every step
+verbose: false
+use_visual_conditioning: true
+prepend_gt_audio: false
+vfps: 25
+return_sampled_indices: false
+experiment_path: null # path to the experiment folder
+checkpoint_path: ${experiment_path}/checkpoints/  # returns the one with the best val_loss
+hparams: null  # solved automatically
+out_path: vas
+device: cuda:1
+compress_original_audio: true
+model_max_duration: 2.56  # do not change!
+frame_step: 1
+# sampling parameters
+use_sampling: true
+temperature: 1.0
+top_k: 128
+top_p: 0.0
+cfg_scale: 6.0
+audio_norm_strategy: clip
+remove_prompts: false
+overridden_hparams:
+  feature_extractor_config:
+    params:
+      ckpt_path: null # path to the AVCLIP VGGSound ckpt
+
+dataloader:
+  dataset_to_use: test
+  dataset_type: motionformer_gen
+  batch_size: 1
+  num_workers: 4
+  path_to_metadata: ./data/vas
+  gen_videos_filepath: null
+  assert_fps: false
+  crop: false
+  # test transforms
+  audio_transforms_test:
+    - target: models.data.transforms.audio_transforms.AudioStereoToMono
+      params:
+        keepdim: true
+    - target: models.data.transforms.audio_transforms.AudioResample
+      params:
+        target_sr: 44100
+        clip_duration: ${model_max_duration}
+    - target: models.data.transforms.audio_transforms.AudioTrim
+      params:
+        duration: ${model_max_duration}
+        sr: 44100
+  video_transforms_test:
+    - target: models.data.transforms.video_transforms.Permute
+      params:
+        permutation: [0, 3, 1, 2]
+    - target: models.data.transforms.video_transforms.UniformTemporalSubsample
+      params:
+        target_fps: ${vfps}
+        clip_duration: ${model_max_duration}
+    - target: models.data.transforms.video_transforms.Permute
+      params:
+        permutation: [0, 2, 3, 1]
+    - target: torchvision.transforms.v2.Resize
+      params:
+        size: 256
+        antialias: true
+    - target: torchvision.transforms.v2.CenterCrop
+      params:
+        size: [224, 224]
+    - target: models.data.transforms.video_transforms.ToFloat32DType
+    - target: torchvision.transforms.v2.Normalize
+      params:
+        mean: [0.5, 0.5, 0.5]
+        std: [0.5, 0.5, 0.5]

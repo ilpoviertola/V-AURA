@@ -1,0 +1,4 @@
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+data/excluded_files/filtered_examples_audioset/imagebind_scores_audioset.json filter=lfs diff=lfs merge=lfs -text
+data/excluded_files/filtered_examples_vggsound/imagebind_scores.json filter=lfs diff=lfs merge=lfs -text
+*.jsonl filter=lfs diff=lfs merge=lfs -text

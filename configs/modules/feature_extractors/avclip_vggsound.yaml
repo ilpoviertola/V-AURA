@@ -1,0 +1,8 @@
+target: models.modules.feature_extractors.avclip.motionformer.MotionFormer
+params:
+  ckpt_path: /path/to/vggsound/epoch_best.pt
+  extract_features: True
+  factorize_space_time: True  # used if extract_features is True
+  agg_space_module: 'TransformerEncoderLayer'  # 'AveragePooling' or 'TransformerEncoderLayer'
+  agg_time_module: torch.nn.Identity
+  add_global_repr: False

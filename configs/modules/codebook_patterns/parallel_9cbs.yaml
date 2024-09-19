@@ -1,0 +1,3 @@
+target: models.modules.misc.codebook_patterns.ParallelPatternProvider
+params:
+  n_q: 9

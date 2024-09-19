@@ -1,0 +1,17 @@
+target: models.modules.sampler.llama.Transformer
+params:
+  num_layers: 24  # num of decoder layers.
+  d_model: 1536 # Dimensionality of the Transformer-model layers and pooler layer.
+  d_codebook: 1024 # The number of different tokens that can be generated (vocabulary size).
+  nhead: 16
+  dim_feedforward: 4096
+  dropout: 0.1
+  activation: gelu
+  layer_norm_eps: 1e-5
+  batch_first: true
+  norm_first: true
+  num_codebooks: 9 # Number of codebooks forwarded to the model. Depends on bandwidth of the DAC.
+  block_size_audio: 256 # The maximum audio sequence length that this model might ever be used with.
+  block_size_video: 64  # The maximum video sequence length that this model might ever be used with.
+  positional_embedder: learned # learned | sinusoidal
+  cond_feature_channel_scaler: 3

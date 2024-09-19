@@ -1,0 +1,46 @@
+batch_size: 1
+num_workers: 0
+path_to_metadata: ./data/demo
+gen_videos_filepath: null
+assert_fps: false
+crop: false
+partition_video_to_clips: true
+sample_duration: 2.56
+# test transforms
+# these transforms resample the data on-the-fly to 44100 Hz and 25 FPS
+# and also resize the video frames
+audio_transforms_test:
+  - target: models.data.transforms.audio_transforms.AudioStereoToMono
+    params:
+      keepdim: true
+  - target: models.data.transforms.audio_transforms.AudioResample
+    params:
+      target_sr: 44100
+      clip_duration: ${sample_duration}
+  - target: models.data.transforms.audio_transforms.AudioTrim
+    params:
+      duration: ${sample_duration}
+      sr: 44100
+video_transforms_test:
+  - target: models.data.transforms.video_transforms.Permute
+    params:
+      permutation: [0, 3, 1, 2]
+  - target: models.data.transforms.video_transforms.UniformTemporalSubsample
+    params:
+      target_fps: 25
+      clip_duration: ${sample_duration}
+  - target: models.data.transforms.video_transforms.Permute
+    params:
+      permutation: [0, 2, 3, 1]
+  - target: torchvision.transforms.v2.Resize
+    params:
+      size: 256
+      antialias: true
+  - target: torchvision.transforms.v2.CenterCrop
+    params:
+      size: [224, 224]
+  - target: models.data.transforms.video_transforms.ToFloat32DType
+  - target: torchvision.transforms.v2.Normalize
+    params:
+      mean: [0.5, 0.5, 0.5]
+      std: [0.5, 0.5, 0.5]

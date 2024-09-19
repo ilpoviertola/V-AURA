@@ -1,0 +1,65 @@
+# Configuration for new audio generation with the model.
+
+action: generate
+
+duration: 2.56
+stride: 0.64  # how much to generate new audio at every step
+verbose: false
+use_visual_conditioning: true
+prepend_gt_audio: false
+vfps: 25
+afps: 44100
+return_sampled_indices: false
+vid_len: null
+experiment_path: null # path to the experiment folder
+checkpoint_path: ${experiment_path}/checkpoints/  # returns the one with the best val_loss
+hparams: null  # solved automatically
+out_path: vggsound_sparse
+device: cuda:1
+compress_original_audio: true
+model_max_duration: 2.56
+frame_step: 1
+# sampling parameters
+use_sampling: true
+temperature: 1.0
+top_k: 128
+top_p: 0.0
+cfg_scale: 6.0
+audio_norm_strategy: clip
+remove_prompts: false
+overridden_hparams:
+  feature_extractor_config:
+    params:
+      ckpt_path: null # path to the AVCLIP VGGSound ckpt
+
+dataloader:
+  # since multiple samples (short videos) are derived from one longer one
+  # it might not be desirable to generate samples for all these subsamples
+  samples_per_video: 5
+  dataset_to_use: test
+  dataset_type: vggsound
+  batch_size: 16
+  num_workers: 4
+  data_dir: null # path to the dataset
+  split_dir: ./data/splits/vggsound
+  meta_file: ./data/meta/vggsound/vggsound.csv
+  excluded_files: null
+  included_files: ./data/test_sets/vggsound_sparse.csv
+  fixed_start_pts_file: ./data/test_sets/vggsound_sparse.csv
+  sample_rate_audio: 44100
+  run_additional_checks: False
+  # test transforms
+  audio_transforms_test:
+  video_transforms_test:
+    - target: torchvision.transforms.v2.Resize
+      params:
+        size: 256
+        antialias: true
+    - target: torchvision.transforms.v2.CenterCrop
+      params:
+        size: [224, 224]
+    - target: models.data.transforms.video_transforms.ToFloat32DType
+    - target: torchvision.transforms.v2.Normalize
+      params:
+        mean: [0.5, 0.5, 0.5]
+        std: [0.5, 0.5, 0.5]
