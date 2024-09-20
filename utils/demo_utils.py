@@ -3,7 +3,7 @@ from pathlib import Path
 from urllib.request import urlretrieve
 import tarfile
 
-from omegaconf import OmegaConf
+from tqdm import tqdm
 
 from utils.utils import get_file_with_best_val_loss
 from scripts.generate import override_hparams, resolve_hparams_path
@@ -17,6 +17,42 @@ DEFAULT_OVERWRITE_HPARAMS = {
 }
 
 
+class TqdmUpTo(tqdm):
+    """
+    Adapted from: https://gist.github.com/leimao/37ff6e990b3226c2c9670a2cd1e4a6f5
+
+    Alternative Class-based version of the above.
+    Provides `update_to(n)` which uses `tqdm.update(delta_n)`.
+    Inspired by [twine#242](https://github.com/pypa/twine/pull/242),
+    [here](https://github.com/pypa/twine/commit/42e55e06).
+    """
+
+    def update_to(self, b=1, bsize=1, tsize=None):
+        """
+        b  : int, optional
+            Number of blocks transferred so far [default: 1].
+        bsize  : int, optional
+            Size of each block (in tqdm units) [default: 1].
+        tsize  : int, optional
+            Total size (in tqdm units). If [default: None] remains unchanged.
+        """
+        if tsize is not None:
+            self.total = tsize
+        self.update(b * bsize - self.n)  # will also set self.n = b * bsize
+
+
+def download(url: str, path: Path) -> None:
+    filename = url.split("/")[-1]
+    with TqdmUpTo(
+        unit="B",
+        unit_scale=True,
+        unit_divisor=1024,
+        miniters=1,
+        desc=f"Downloading {filename}",
+    ) as t:
+        urlretrieve(url, path, reporthook=t.update_to, data=None)
+
+
 def resolve_ckpt_demo(ckpt: tp.Optional[str]) -> Path:
     if ckpt is None:
         ckpt = "./logs/24-08-01T08-34-26"
@@ -25,9 +61,7 @@ def resolve_ckpt_demo(ckpt: tp.Optional[str]) -> Path:
     if not ckpt_path.exists():
         print(f"Downloading checkpoint from {VAURA_CHECKPOINT_URL}")
         ckpt_path.parent.mkdir(parents=True, exist_ok=True)
-        urlretrieve(
-            VAURA_CHECKPOINT_URL, (ckpt_path.parent / "24-08-01T08-34-26.tar.gz")
-        )
+        download(VAURA_CHECKPOINT_URL, ckpt_path.parent / "24-08-01T08-34-26.tar.gz")
         assert (
             ckpt_path.parent / "24-08-01T08-34-26.tar.gz"
         ).exists(), "Download failed"
@@ -52,10 +86,8 @@ def resolve_hparams_demo(checkpoint_path: Path, avclip_ckpt: tp.Optional[str]) -
     if not avclip_ckpt_path.exists():
         print(f"Downloading AVCLIP checkpoint from {AVCLIP_CHECKPOINT_URL}")
         avclip_ckpt_path.parent.mkdir(parents=True, exist_ok=True)
-        urlretrieve(AVCLIP_CHECKPOINT_URL, avclip_ckpt_path)
-        urlretrieve(
-            AVCLIP_CFG_URL, avclip_ckpt_path.parent / "cfg-23-12-22T16-10-50.yaml"
-        )
+        download(AVCLIP_CHECKPOINT_URL, avclip_ckpt_path)
+        download(AVCLIP_CFG_URL, avclip_ckpt_path.parent / "cfg-23-12-22T16-10-50.yaml")
         assert avclip_ckpt_path.exists(), "Download failed"
 
     assert avclip_ckpt_path.exists(), f"Checkpoint not found at {avclip_ckpt_path}"
