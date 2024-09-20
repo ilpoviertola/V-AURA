@@ -2,7 +2,7 @@
 
 The official implementation of V-AURA.
 
-[[`Project Page`](https://v-aura.notion.site/)]
+[[`Project Page`](https://v-aura.notion.site/)] [[`Google Colab Demo`](https://colab.research.google.com/drive/1mSK5dnv2YT1RWh-AYxKQs9yy1eM1DIzW?usp=sharing)]
 
 ## Environment
 
@@ -16,7 +16,7 @@ conda activate vaura_cu12.1
 
 ## Demo
 
-We provide a demo notebook (```demo.ipynb```) to generate samples with the pre-trained model. Simply activate the environment and execute the cells in the notebook to generate samples.
+We provide a local demo notebook (```demo.ipynb```) and a [Google Colab](https://colab.research.google.com/drive/1mSK5dnv2YT1RWh-AYxKQs9yy1eM1DIzW?usp=sharing) notebook to generate samples with the pre-trained model. In the local version, simply activate the environment and execute the cells in the notebook to generate samples. On Google Colab just execute the cells.
 
 ## Data
 
