@@ -2,7 +2,7 @@
 
 The official implementation of V-AURA.
 
-[[`Project Page`](https://v-aura.notion.site/)] [[`Google Colab Demo`](https://colab.research.google.com/drive/1mSK5dnv2YT1RWh-AYxKQs9yy1eM1DIzW?usp=sharing)]
+[[`Project Page`](https://v-aura.notion.site/)] [[`Google Colab Demo`](https://colab.research.google.com/drive/1mSK5dnv2YT1RWh-AYxKQs9yy1eM1DIzW?usp=sharing)] [[`Arxiv`](https://arxiv.org/abs/2409.13689)]
 
 ## Environment
 
@@ -88,7 +88,8 @@ python main.py
 
 ## Evaluation
 
-For evaluation use my [evaluation framework](https://github.com/ilpoviertola/eval_generative_v2a_models).
+Work in progress to release the evaluation code.
+<!-- For evaluation use my [evaluation framework](https://github.com/ilpoviertola/eval_generative_v2a_models). -->
 
 ## Acknowledgements
 
