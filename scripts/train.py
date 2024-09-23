@@ -60,9 +60,6 @@ def train(cfg: OmegaConf):
         files_to_track_during_training=cfg.model.files_to_track_during_training,
         flatten_vis_feats=cfg.model.flatten_vis_feats,
         apply_per_video_frame_mask=cfg.model.apply_per_video_frame_mask,
-        lora_finetune_feature_extractor=cfg.model.lora_finetune_feature_extractor,
-        lora_target_modules=cfg.model.lora_target_modules,
-        lora_rank=cfg.model.lora_rank,
     )
 
     trainer = pl.Trainer(

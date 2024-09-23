@@ -52,7 +52,7 @@ python main.py
     dataloader.data_dir=/path/to/reencoded_data
     trainer.num_nodes=1  # number of nodes
     trainer.devices=[0]  # GPUs, e.g. 4 or [0, 2]
-    feature_extractor_config.params.ckpt_path=/path/to/epoch_best.pt
+    model.feature_extractor_config.params.ckpt_path=/path/to/epoch_best.pt
 ```
 
 If you want to resume training, just provide the path to the last checkpoint in the **experiment directory** (e.g. YY-MM-DDTHH-MM-SS, which contains checkpoint and logging dirs) and the training will continue from there. Also, logging will be appended to the existing TensorBoard logs:
@@ -63,7 +63,7 @@ python main.py
     dataloader.data_dir=/path/to/reencoded_data
     trainer.num_nodes=1  # number of nodes
     trainer.devices=[0]  # GPUs, e.g. 4 or [0, 2]
-    feature_extractor_config.params.ckpt_path=/path/to/epoch_best.pt
+    model.feature_extractor_config.params.ckpt_path=/path/to/epoch_best.pt
     trainer.ckpt_path=/path/to/experiment/last.ckpt
 ```
 
