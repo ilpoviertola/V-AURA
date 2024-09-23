@@ -67,6 +67,8 @@ python main.py
     trainer.ckpt_path=/path/to/experiment/last.ckpt
 ```
 
+For distributed training, use [torchrun](https://lightning.ai/docs/pytorch/stable/clouds/cluster_intermediate_2.html) or [SLURM](https://lightning.ai/docs/pytorch/stable/clouds/cluster_advanced.html) and set the number of nodes and devices according to your setup. Note that the number of GPUs and nodes configured in the Trainer (model config.yaml) should match the actual number of GPUs and nodes defined in torchrun/SLURM config.
+
 By default, TensorBoard is used to log the progress. Start TensorBoard with the following command:
 
 ```bash
