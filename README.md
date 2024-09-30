@@ -90,8 +90,7 @@ python main.py
 
 ## Evaluation
 
-Work in progress to release the evaluation code.
-<!-- For evaluation use my [evaluation framework](https://github.com/ilpoviertola/eval_generative_v2a_models). -->
+For evaluation use my [evaluation framework](https://github.com/ilpoviertola/gmelab).
 
 ## Acknowledgements
 
