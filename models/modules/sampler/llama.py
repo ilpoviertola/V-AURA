@@ -107,6 +107,7 @@ class AVCLIPEmbedder(nn.Module):
         super().__init__()
         self.dropout_p = dropout_p
         self.in_channels = in_channels
+        self.hidden_size = hidden_size
         self.projection = MLP(in_channels, hidden_size, hidden_size)
         self.token_num = token_num
         self.register_buffer(
