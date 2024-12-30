@@ -115,3 +115,5 @@ We would like to thank following open-source repositories for their code and doc
 - [PyTorch](https://github.com/pytorch/pytorch)
 - [PyTorchLightning](https://github.com/Lightning-AI/pytorch-lightning)
 - NumPy, SciPy, and other Python libraries
+
+The work was supported by the Academy of Finland projects 353139 and 362409. We also acknowledge CSC – IT Center for Science, Finland, for computational resources.
