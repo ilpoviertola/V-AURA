@@ -1,8 +1,20 @@
 # V-AURA: Temporally Aligned Audio for Video with Autoregression
 
-The official implementation of V-AURA.
+The official implementation of V-AURA (ICASSP 2025).
 
 [[`Project Page`](https://v-aura.notion.site/)] [[`Google Colab Demo`](https://colab.research.google.com/drive/1mSK5dnv2YT1RWh-AYxKQs9yy1eM1DIzW?usp=sharing)] [[`Arxiv`](https://arxiv.org/abs/2409.13689)]
+
+## Cite
+
+```bibtex
+@InProceedings{viertola2024temporally,
+  title={Temporally aligned audio for video with autoregression},
+  author={Viertola, Ilpo and Iashin, Vladimir and Rahtu, Esa},
+  booktitle={ICASSP 2025-2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  year={2025},
+  organization={IEEE}
+}
+```
 
 ## Environment
 
