@@ -7,7 +7,7 @@ The official implementation of V-AURA (ICASSP 2025).
 ## Cite
 
 ```bibtex
-@InProceedings{viertola2024temporally,
+@InProceedings{viertola2025temporally,
   title={Temporally aligned audio for video with autoregression},
   author={Viertola, Ilpo and Iashin, Vladimir and Rahtu, Esa},
   booktitle={ICASSP 2025-2025 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
