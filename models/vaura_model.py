@@ -789,7 +789,7 @@ class VAURAModel(pl.LightningModule):
         if use_cfg:
             cond_null = (
                 torch.zeros_like(condition)
-                + self.sampler.cls_embeddings.uncond_embedding
+                + self.sampler.cls_embeddings.uncond_embedding[:condition.size(1), ...]
             )
             condition = torch.cat([condition, cond_null], dim=0)
             sequence = sequence.repeat(2, 1, 1)
